@@ -8,9 +8,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/", function(req, res){
-
     res.sendFile(__dirname + "/index.html");
-
 });
 
 app.post("/", function(req, res){
@@ -27,15 +25,24 @@ app.post("/", function(req, res){
 
         response.on("data", function(data){
             const weatherData = JSON.parse(data);
-            const temp = weatherData.main.temp;
+            // temp response in Kelvins --> convert to fahrenheit
+            temp = ((((weatherData.main.temp)-273.15)*9)/5)+32;
+            temp = +temp.toFixed(2)
             const weatherDescription = weatherData.weather[0].description;
             const icon = weatherData.weather[0].icon;
             const imageURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
-            res.write('<head><meta charset="utf-8"></head>');
-            res.write("<h1>The temperature in " + query + " is " + temp + " degrees Fahrenheit.</h1>");
-            res.write("The weather is currently " + weatherDescription);
-            res.write("<img src=" + imageURL +">");
-            print(url)
+            html = `
+                <head><meta charset="utf-8"></head>
+                <h1>The temperature in ${query} is ${temp} degress Fahrenheit.</h1>
+                <p>The weather is currently ${weatherDescription}</p>
+                <img src="${imageURL}">
+            `;
+            res.write(html)
+            // res.write('<head><meta charset="utf-8"></head>');
+            // res.write("<h1>The temperature in " + query + " is " + temp + " degrees Fahrenheit.</h1>");
+            // res.write("<p>The weather is currently " + weatherDescription + "</p>");
+            // res.write("<img src=" + imageURL +">");
+            console.log(url)
             res.send();
         });
     });
