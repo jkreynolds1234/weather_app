@@ -6,6 +6,10 @@ const { request } = require("http");
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+// Own stylesheet
+app.use("/", express.static(__dirname + '/public'));
+//Bootstrap stylesheet
+app.use("/", express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 app.get("/", function(req, res){
     res.sendFile(__dirname + "/index.html");
@@ -16,7 +20,7 @@ app.post("/", function(req, res){
     const apiKey = "16c896292eba4330a3a5c4998afdced2";
     const url = "https://api.openweathermap.org/data/2.5/weather?q=" + query + "&appid=" + apiKey;
     
-    console.log(url)
+    // console.log(url)
     // https://api.openweathermap.org/data/2.5/weather?q=sacramento&appid=16c896292eba4330a3a5c4998afdced2
 
     // https get request to the api
@@ -33,9 +37,16 @@ app.post("/", function(req, res){
             const imageURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
             html = `
                 <head><meta charset="utf-8"></head>
-                <h1>The temperature in ${query} is ${temp} degress Fahrenheit.</h1>
-                <p>The weather is currently ${weatherDescription}</p>
-                <img src="${imageURL}">
+                <body>
+                    <h1>Current Weather in ${query}</h1>
+                    <div id="tempContainer">
+                        <img src="${imageURL}">
+                        <div>
+                            <h3>${temp}°F</h3>
+                            <h3>${weatherDescription}</h3>
+                        </div>
+                    </div>
+                </body>
             `;
             res.write(html)
             // res.write('<head><meta charset="utf-8"></head>');
