@@ -87,6 +87,48 @@ app.post("/", function(req, res){
                                 <h3>${weatherDescription}</h3>
                             </div>
                         </div>
+                        <div class="row row-cols-1 row-cols-md-2 g-3 text-center">
+                            <div class="col">
+                                <div class="card box-shadow">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Card title</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card box-shadow">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Card title</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card box-shadow">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Card title</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card box-shadow">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Card title</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <script language="javascript" src="/js/bootstrap.min.js"></script>
                     </body>
                 </html>

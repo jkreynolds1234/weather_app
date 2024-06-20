@@ -30,6 +30,13 @@ form {
     align-items: center;
 }
 
+#cards {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+}
+
 /* @media screen and (min-width: 340px) and (max-width: 768px) {
     #cityInput {
         width: 17rem;
