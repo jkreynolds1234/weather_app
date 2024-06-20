@@ -42,11 +42,16 @@ app.post("/", function(req, res){
             max_temp = Math.round(((((weatherData.main.temp_max)-273.15)*9)/5)+32);
             pressure = weatherData.main.pressure;
             humidity = weatherData.main.humidity;
-            wind = weatherData.main.wind;
-            // sunrise = msToTime(weatherData.main.sunrise);
-            // sunset = msToTime(weatherData.main.sunset);
-            // console.log(sunrise);
-            // console.log(sunset);
+            wind = weatherData.wind.speed;
+
+            // Get sunrise time
+            let sunrise_unix = weatherData.sys.sunrise + weatherData.timezone;
+            let sunrise_date = new Date(sunrise_unix*1000);
+            [sunrise_hrs, sunrise_mins, sunrise_tod] = hoursMins(sunrise_date);
+            // Get sunset time
+            let sunset_unix = weatherData.sys.sunset + weatherData.timezone;
+            let sunset_date = new Date(sunset_unix*1000);
+            [sunset_hrs, sunset_mins, sunset_tod] = hoursMins(sunset_date);
 
             // Get current date and time
             current_date = new Date();
@@ -57,11 +62,18 @@ app.post("/", function(req, res){
             else {
                 tod ="am";
             }
+            if (hours > 12) {
+                hours = hours%12;
+            }
             minutes = current_date.getMinutes();
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            const days_of_wk = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+            day_of_wk = days_of_wk[current_date.getDay()];
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             let month = months[current_date.getMonth()];
             day = current_date.getDate();
-            // console.log(`${hours} ${minutes}`);
 
             // HTML return
             html = `
@@ -75,56 +87,59 @@ app.post("/", function(req, res){
                         <link href="/styles.css" rel="stylesheet">
                     </head>
                     <body>
-                        <h2>${query} Weather</h2>
+                        <h2 id="weatherTitle">${query} Weather</h2>
                         <div id="timeDate">
-                            <div>${month} ${day}</div>
-                            <div>${hours}:${minutes}${tod}</div>
+                            <h6>${day_of_wk}, ${month} ${day}</h6>
+                            <h6>${hours}:${minutes}${tod}</h6>
                         </div>
                         <div id="tempContainer">
                             <img src="${imageURL}">
-                            <div id="tempDescription">
-                                <h3>${temp}°F</h3>
-                                <h3>${weatherDescription}</h3>
-                            </div>
+                            <h1 id="temp">${temp}°F</h1>
                         </div>
-                        <div class="row row-cols-1 row-cols-md-2 g-3 text-center">
+                        <h3>${weatherDescription}</h3>
+                        <div id="minMaxContainer">
+                            <h6>Min Temp | Max Temp</h6>
+                            <h6>${min_temp}°F | ${max_temp}°F</h6>
+                        </div>
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 text-center" id="cards">
                             <div class="col">
-                                <div class="card box-shadow">
+                                <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Card title</h5>
+                                        <h5 class="card-title">Sunrise & Sunset</h5>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                        <p class="card-text">${sunrise_hrs}:${sunrise_mins}${sunrise_tod}</p>
+                                        <p class="card-text">${sunset_hrs}:${sunset_mins}${sunset_tod}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card box-shadow">
+                                <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Card title</h5>
+                                        <h5 class="card-title">Feels like</h5>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                        <p class="card-text">${feels_like}°F</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card box-shadow">
+                                <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Card title</h5>
+                                        <h5 class="card-title">Humidity</h5>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                        <p class="card-text">${humidity}%</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="card box-shadow">
+                                <div class="card">
                                     <div class="card-header">
-                                        <h5 class="card-title">Card title</h5>
+                                        <h5 class="card-title">Wind Speed</h5>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text"> This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                                        <p class="card-text">${wind}m/s</p>
                                     </div>
                                 </div>
                             </div>
@@ -145,15 +160,20 @@ app.listen(3000, function(){
     console.log("Server is running on port 3000.");
 });
 
-// function msToTime(duration) {
-//     var milliseconds = Math.floor((duration % 1000) / 100),
-//       seconds = Math.floor((duration / 1000) % 60),
-//       minutes = Math.floor((duration / (1000 * 60)) % 60),
-//       hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-  
-//     hours = (hours < 10) ? "0" + hours : hours;
-//     minutes = (minutes < 10) ? "0" + minutes : minutes;
-//     seconds = (seconds < 10) ? "0" + seconds : seconds;
-  
-//     return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-// }
+function hoursMins(date) {
+    hours = date.getUTCHours();
+    if (hours >= 12) {
+        tod = "pm";
+    }
+    else {
+        tod ="am";
+    }
+    if (hours > 12) {
+        hours = hours%12;
+    }
+    minutes = date.getUTCMinutes();
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    return [hours, minutes, tod];
+}
