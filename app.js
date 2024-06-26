@@ -104,41 +104,36 @@ app.post("/", function(req, res){
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 text-center" id="cards">
                             <div class="col">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Sunrise & Sunset</h5>
-                                    </div>
                                     <div class="card-body">
-                                        <p class="card-text">${sunrise_hrs}:${sunrise_mins}${sunrise_tod}</p>
-                                        <p class="card-text">${sunset_hrs}:${sunset_mins}${sunset_tod}</p>
+                                        <img class="cardImage" src="/images/sunrise.png">
+                                        <h5 class="card-title">Sunrise | Sunset</h5>
+                                        <p class="card-text">${sunrise_hrs}:${sunrise_mins}${sunrise_tod} | ${sunset_hrs}:${sunset_mins}${sunset_tod}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Feels like</h5>
-                                    </div>
                                     <div class="card-body">
+                                        <img class="cardImage" src="/images/temperature.png">
+                                        <h5 class="card-title">Feels like</h5>
                                         <p class="card-text">${feels_like}°F</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Humidity</h5>
-                                    </div>
                                     <div class="card-body">
+                                        <img class="cardImage" src="/images/humidity.png">
+                                        <h5 class="card-title">Humidity</h5>
                                         <p class="card-text">${humidity}%</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Wind Speed</h5>
-                                    </div>
                                     <div class="card-body">
+                                        <img class="cardImage" src="/images/wind.png">
+                                        <h5 class="card-title">Wind Speed</h5>
                                         <p class="card-text">${wind}m/s</p>
                                     </div>
                                 </div>

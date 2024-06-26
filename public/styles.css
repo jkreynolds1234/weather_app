@@ -49,15 +49,31 @@ form {
 #cards {
     margin-top: 2rem;
     margin-bottom: 2rem;
-    width: 75vw;
 }
 
-@media screen and (min-width: 340px) and (max-width: 768px) {
+.card {
+    background-color: rgba(255, 255, 255, 0.75);
+    min-width: 200px;
+    min-height: 200px;
+    padding-top: 10px;
+}
+
+.cardImage {
+    width: 75px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 991.5px) {
+    #cards {
+        max-width: 500px;
+    }
+}
+
+@media screen and (min-width: 340px) and (max-width: 767.5px) {
     #cityInput {
         width: 17rem;
     }
 
     #cards {
-        width: 250px;
+        max-width: 200px;
     }
 }
